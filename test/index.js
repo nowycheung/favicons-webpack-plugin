@@ -29,82 +29,82 @@ const baseWebpackConfig = (plugin, folderName) => {
   };
 };
 
-// test('should throw error when called without arguments', async t => {
-//   t.plan(2);
-//   let plugin;
-//   try {
-//     plugin = new ReFaviconsWebpackPlugin();
-//   } catch (err) {
-//     t.is(err.message, 'ReFaviconsWebpackPlugin options are required');
-//   }
-//   t.is(plugin, undefined);
-// });
+test('should throw error when called without arguments', async t => {
+  t.plan(2);
+  let plugin;
+  try {
+    plugin = new ReFaviconsWebpackPlugin();
+  } catch (err) {
+    t.is(err.message, 'ReFaviconsWebpackPlugin options are required');
+  }
+  t.is(plugin, undefined);
+});
 
-// test('should throw error if the file path does not exist', async t => {
-//   t.plan(2);
-//   let plugin;
-//   try {
-//     plugin = new ReFaviconsWebpackPlugin('fake/path');
-//   } catch (err) {
-//     t.is(err.message, 'Input file path does not exist');
-//   }
-//   t.is(plugin, undefined);
-// });
+test('should throw error if the file path does not exist', async t => {
+  t.plan(2);
+  let plugin;
+  try {
+    plugin = new ReFaviconsWebpackPlugin('fake/path');
+  } catch (err) {
+    t.is(err.message, 'Input file path does not exist');
+  }
+  t.is(plugin, undefined);
+});
 
-// test('should take a string as argument', async t => {
-//   var plugin = new ReFaviconsWebpackPlugin(LOGO_PATH);
-//   t.is(plugin.options.logo, LOGO_PATH);
-// });
+test('should take a string as argument', async t => {
+  var plugin = new ReFaviconsWebpackPlugin(LOGO_PATH);
+  t.is(plugin.options.logo, LOGO_PATH);
+});
 
-// test('should take an object with just the logo as argument', async t => {
-//   var plugin = new ReFaviconsWebpackPlugin({ logo: LOGO_PATH });
-//   t.is(plugin.options.logo, LOGO_PATH);
-// });
+test('should take an object with just the logo as argument', async t => {
+  var plugin = new ReFaviconsWebpackPlugin({ logo: LOGO_PATH });
+  t.is(plugin.options.logo, LOGO_PATH);
+});
 
-// test('should generate the expected default result', async t => {
-//   const folderName = 'default';
-//   const stats = await webpack(baseWebpackConfig(new ReFaviconsWebpackPlugin({
-//     logo: LOGO_PATH
-//   }), folderName));
-//   const outputPath = stats.compilation.compiler.outputPath;
-//   const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
-//   const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
-//   const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
-//   t.is(diffFiles[0], undefined);
-// });
+test('should generate the expected default result', async t => {
+  const folderName = 'default';
+  const stats = await webpack(baseWebpackConfig(new ReFaviconsWebpackPlugin({
+    logo: LOGO_PATH
+  }), folderName));
+  const outputPath = stats.compilation.compiler.outputPath;
+  const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
+  const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
+  const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
+  t.is(diffFiles[0], undefined);
+});
 
-// test('should generate a configured JSON file', async t => {
-//   const folderName = 'generate-json';
-//   const stats = await webpack(baseWebpackConfig(new ReFaviconsWebpackPlugin({
-//     logo: LOGO_PATH,
-//     emitStats: true,
-//     persistentCache: false,
-//     statsFilename: 'iconstats.json'
-//   }), folderName));
-//   const outputPath = stats.compilation.compiler.outputPath;
-//   const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
-//   const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
-//   const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
-//   t.is(diffFiles[0], undefined);
-// });
+test('should generate a configured JSON file', async t => {
+  const folderName = 'generate-json';
+  const stats = await webpack(baseWebpackConfig(new ReFaviconsWebpackPlugin({
+    logo: LOGO_PATH,
+    emitStats: true,
+    persistentCache: false,
+    statsFilename: 'iconstats.json'
+  }), folderName));
+  const outputPath = stats.compilation.compiler.outputPath;
+  const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
+  const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
+  const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
+  t.is(diffFiles[0], undefined);
+});
 
-// test('should work together with the html-webpack-plugin', async t => {
-//   const folderName = 'generate-html';
-//   const stats = await webpack(baseWebpackConfig([
-//     new ReFaviconsWebpackPlugin({
-//       logo: LOGO_PATH,
-//       emitStats: true,
-//       statsFilename: 'iconstats.json',
-//       persistentCache: false
-//     }),
-//     new HtmlWebpackPlugin()
-//   ], folderName));
-//   const outputPath = stats.compilation.compiler.outputPath;
-//   const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
-//   const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
-//   const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
-//   t.is(diffFiles[0], undefined);
-// });
+test('should work together with the html-webpack-plugin', async t => {
+  const folderName = 'generate-html';
+  const stats = await webpack(baseWebpackConfig([
+    new ReFaviconsWebpackPlugin({
+      logo: LOGO_PATH,
+      emitStats: true,
+      statsFilename: 'iconstats.json',
+      persistentCache: false
+    }),
+    new HtmlWebpackPlugin()
+  ], folderName));
+  const outputPath = stats.compilation.compiler.outputPath;
+  const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
+  const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
+  const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
+  t.is(diffFiles[0], undefined);
+});
 
 test('should not recompile if there is a cache file', async t => {
   const folderName = 'from-cache';
