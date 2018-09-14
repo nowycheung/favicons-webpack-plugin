@@ -1,5 +1,8 @@
 Re Favicons Webpack Plugin
 
+[![Build status](https://travis-ci.org/nowycheung/favicons-webpack-plugin.svg?branch=master)](https://travis-ci.org/nowycheung/favicons-webpack-plugin)
+[![Dependency Status](https://david-dm.org/nowycheung/favicons-webpack-plugin.svg)](https://david-dm.org/nowycheung/favicons-webpack-plugin)
+
 > Note: This project was forked from [Favicons Webpack Plugin](https://github.com/jantimon/favicons-webpack-plugin) with some enhancement added.
 > With `refavicons-webpack-plugin` now you can pass all parameters that is supported by `favicons`.
 
