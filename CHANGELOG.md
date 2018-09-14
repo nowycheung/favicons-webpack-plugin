@@ -4,6 +4,7 @@
 + Updates favoicons, loader-utils, lodash, ava
 + Rename to refavicons-webpack-plugin
 + Throws error if the file path doesn't exist
++ Updates test
 
 ## BREAKING CHANGE
 
