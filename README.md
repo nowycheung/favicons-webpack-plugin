@@ -1,6 +1,7 @@
 Re Favicons Webpack Plugin
 
 > Note: This project was forked from [Favicons Webpack Plugin](https://github.com/jantimon/favicons-webpack-plugin) with some enhancement added.
+> With `refavicons-webpack-plugin` now you can pass all parameters that is supported by `favicons`.
 
 
 Allows to use the [favicons](https://github.com/haydenbleasel/favicons) generator with webpack

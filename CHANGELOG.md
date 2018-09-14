@@ -1,8 +1,8 @@
 # 0.0.1
 
++ Forked favicons-webpack-plugin
 + Updates version favoicons, loader-utils, lodash
 + Rename to refavicons-webpack-plugin
-+ Forked favicons-webpack-plugin
 + Throws error if the file path doesn't exist
 
 ## BREAKING CHANGE
