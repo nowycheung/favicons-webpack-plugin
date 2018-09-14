@@ -1,7 +1,14 @@
 Re Favicons Webpack Plugin
 
+[![npm version](https://badge.fury.io/js/refavicons-webpack-plugin.svg)](https://badge.fury.io/js/refavicons-webpack-plugin)
 [![Build status](https://travis-ci.org/nowycheung/favicons-webpack-plugin.svg?branch=master)](https://travis-ci.org/nowycheung/favicons-webpack-plugin)
 [![Dependency Status](https://david-dm.org/nowycheung/favicons-webpack-plugin.svg)](https://david-dm.org/nowycheung/favicons-webpack-plugin)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
+[![GitHub issues](https://img.shields.io/github/issues/nowycheung/favicons-webpack-plugin.svg)](https://github.com/nowycheung/favicons-webpack-plugin/issues)
+[![GitHub license](https://img.shields.io/github/license/nowycheung/favicons-webpack-plugin.svg)](https://github.com/nowycheung/favicons-webpack-plugin/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/nowycheung/favicons-webpack-plugin.svg)](https://github.com/nowycheung/favicons-webpack-plugin/stargazers)
+
+
 
 > Note: This project was forked from [Favicons Webpack Plugin](https://github.com/jantimon/favicons-webpack-plugin) with some enhancement added.
 > With `refavicons-webpack-plugin` now you can pass all parameters that is supported by `favicons`.
