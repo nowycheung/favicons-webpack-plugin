@@ -5,44 +5,33 @@ var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
 
-function FaviconsWebpackPlugin (options) {
+function ReFaviconsWebpackPlugin (options) {
   if (typeof options === 'string') {
     options = {logo: options};
   }
-  assert(typeof options === 'object', 'FaviconsWebpackPlugin options are required');
+  assert(typeof options === 'object', 'ReFaviconsWebpackPlugin options are required');
   assert(options.logo, 'An input file is required');
+  assert(fs.existsSync(options.logo), 'Input file path does not exist');
+
   this.options = _.extend({
     prefix: 'icons-[hash]/',
     emitStats: false,
     statsFilename: 'iconstats-[hash].json',
     persistentCache: true,
     inject: true,
-    background: '#fff'
   }, options);
-  this.options.icons = _.extend({
-    android: true,
-    appleIcon: true,
-    appleStartup: true,
-    coast: false,
-    favicons: true,
-    firefox: true,
-    opengraph: false,
-    twitter: false,
-    yandex: false,
-    windows: false
-  }, this.options.icons);
 }
 
-FaviconsWebpackPlugin.prototype.apply = function (compiler) {
+ReFaviconsWebpackPlugin.prototype.apply = function (compiler) {
   var self = this;
-  if (!self.options.title) {
-    self.options.title = guessAppName(compiler.context);
+  if (!self.options.appName) {
+    self.options.appName = guessAppName(compiler.context);
   }
 
   // Generate the favicons (webpack 4 compliant + back compat)
   var compilationResult;
   (compiler.hooks
-    ? compiler.hooks.make.tapAsync.bind(compiler.hooks.make, 'FaviconsWebpackPluginMake')
+    ? compiler.hooks.make.tapAsync.bind(compiler.hooks.make, 'ReFaviconsWebpackPluginMake')
     : compiler.plugin.bind(compiler, 'make')
   )((compilation, callback) => {
     childCompiler.compileTemplate(self.options, compiler.context, compilation)
@@ -66,7 +55,7 @@ FaviconsWebpackPlugin.prototype.apply = function (compiler) {
 
     // webpack 4
     if (compiler.hooks) {
-      compiler.hooks.compilation.tap('FaviconsWebpackPlugin', function (cmpp) {
+      compiler.hooks.compilation.tap('ReFaviconsWebpackPlugin', function (cmpp) {
         cmpp.hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync('favicons-webpack-plugin', addFaviconsToHtml);
       });
     } else {
@@ -79,7 +68,7 @@ FaviconsWebpackPlugin.prototype.apply = function (compiler) {
   // Remove the stats from the output if they are not required (webpack 4 compliant + back compat)
   if (!self.options.emitStats) {
     (compiler.hooks
-      ? compiler.hooks.emit.tapAsync.bind(compiler.hooks.emit, 'FaviconsWebpackPluginEmit')
+      ? compiler.hooks.emit.tapAsync.bind(compiler.hooks.emit, 'ReFaviconsWebpackPluginEmit')
       : compiler.plugin.bind(compiler, 'emit')
     )((compilation, callback) => {
       delete compilation.assets[compilationResult.outputName];
@@ -102,4 +91,4 @@ function guessAppName (compilerWorkingDirectory) {
   return JSON.parse(fs.readFileSync(packageJson)).name;
 }
 
-module.exports = FaviconsWebpackPlugin;
+module.exports = ReFaviconsWebpackPlugin;

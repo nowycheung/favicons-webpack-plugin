@@ -2,7 +2,7 @@
 import test from 'ava';
 import path from 'path';
 import rimraf from 'rimraf';
-import FaviconsWebpackPlugin from '..';
+import ReFaviconsWebpackPlugin from '..';
 import denodeify from 'denodeify';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import dircompare from 'dir-compare';
@@ -34,25 +34,36 @@ test('should throw error when called without arguments', async t => {
   t.plan(2);
   let plugin;
   try {
-    plugin = new FaviconsWebpackPlugin();
+    plugin = new ReFaviconsWebpackPlugin();
   } catch (err) {
-    t.is(err.message, 'FaviconsWebpackPlugin options are required');
+    t.is(err.message, 'ReFaviconsWebpackPlugin options are required');
+  }
+  t.is(plugin, undefined);
+});
+
+test('should throw error if the file path does not exist', async t => {
+  t.plan(2);
+  let plugin;
+  try {
+    plugin = new ReFaviconsWebpackPlugin('fake/path');
+  } catch (err) {
+    t.is(err.message, 'Input file path does not exist');
   }
   t.is(plugin, undefined);
 });
 
 test('should take a string as argument', async t => {
-  var plugin = new FaviconsWebpackPlugin(LOGO_PATH);
+  var plugin = new ReFaviconsWebpackPlugin(LOGO_PATH);
   t.is(plugin.options.logo, LOGO_PATH);
 });
 
 test('should take an object with just the logo as argument', async t => {
-  var plugin = new FaviconsWebpackPlugin({ logo: LOGO_PATH });
+  var plugin = new ReFaviconsWebpackPlugin({ logo: LOGO_PATH });
   t.is(plugin.options.logo, LOGO_PATH);
 });
 
 test('should generate the expected default result', async t => {
-  const stats = await webpack(baseWebpackConfig(new FaviconsWebpackPlugin({
+  const stats = await webpack(baseWebpackConfig(new ReFaviconsWebpackPlugin({
     logo: LOGO_PATH
   })));
   const outputPath = stats.compilation.compiler.outputPath;
@@ -63,7 +74,7 @@ test('should generate the expected default result', async t => {
 });
 
 test('should generate a configured JSON file', async t => {
-  const stats = await webpack(baseWebpackConfig(new FaviconsWebpackPlugin({
+  const stats = await webpack(baseWebpackConfig(new ReFaviconsWebpackPlugin({
     logo: LOGO_PATH,
     emitStats: true,
     persistentCache: false,
@@ -78,7 +89,7 @@ test('should generate a configured JSON file', async t => {
 
 test('should work together with the html-webpack-plugin', async t => {
   const stats = await webpack(baseWebpackConfig([
-    new FaviconsWebpackPlugin({
+    new ReFaviconsWebpackPlugin({
       logo: LOGO_PATH,
       emitStats: true,
       statsFilename: 'iconstats.json',
@@ -95,7 +106,7 @@ test('should work together with the html-webpack-plugin', async t => {
 
 test('should not recompile if there is a cache file', async t => {
   const options = baseWebpackConfig([
-    new FaviconsWebpackPlugin({
+    new ReFaviconsWebpackPlugin({
       logo: LOGO_PATH,
       emitStats: false,
       persistentCache: true

@@ -1,3 +1,16 @@
+# 0.0.1
+
++ Updates version favoicons, loader-utils, lodash
++ Rename to refavicons-webpack-plugin
++ Forked favicons-webpack-plugin
++ Throws error if the file path doesn't exist
+
+## BREAKING CHANGE
+
++ All the configuration are now aligned with favicons
+
+==========================================
+
 # 0.0.9
 
 + Improve support for Webpack 4
