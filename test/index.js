@@ -14,21 +14,20 @@ const writeFile = denodeify(require('fs').writeFile);
 const mkdirp = denodeify(require('mkdirp'));
 
 const compareOptions = {compareSize: true};
-let outputId = 0;
 const LOGO_PATH = path.resolve(__dirname, 'fixtures/logo.png');
 
 rimraf.sync(path.resolve(__dirname, '../dist'));
 
-function baseWebpackConfig (plugin) {
+const baseWebpackConfig = (plugin, folderName) => {
   return {
     devtool: 'eval',
     entry: path.resolve(__dirname, 'fixtures/entry.js'),
     output: {
-      path: path.resolve(__dirname, '../dist', 'test-' + (outputId++))
+      path: path.resolve(__dirname, '../dist', folderName)
     },
     plugins: [].concat(plugin)
   };
-}
+};
 
 test('should throw error when called without arguments', async t => {
   t.plan(2);
@@ -63,31 +62,34 @@ test('should take an object with just the logo as argument', async t => {
 });
 
 test('should generate the expected default result', async t => {
+  const folderName = 'default';
   const stats = await webpack(baseWebpackConfig(new ReFaviconsWebpackPlugin({
     logo: LOGO_PATH
-  })));
+  }), folderName));
   const outputPath = stats.compilation.compiler.outputPath;
-  const expected = path.resolve(__dirname, 'fixtures/expected/default');
+  const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
   const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
   const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
   t.is(diffFiles[0], undefined);
 });
 
 test('should generate a configured JSON file', async t => {
+  const folderName = 'generate-json';
   const stats = await webpack(baseWebpackConfig(new ReFaviconsWebpackPlugin({
     logo: LOGO_PATH,
     emitStats: true,
     persistentCache: false,
     statsFilename: 'iconstats.json'
-  })));
+  }), folderName));
   const outputPath = stats.compilation.compiler.outputPath;
-  const expected = path.resolve(__dirname, 'fixtures/expected/generate-json');
+  const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
   const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
   const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
   t.is(diffFiles[0], undefined);
 });
 
 test('should work together with the html-webpack-plugin', async t => {
+  const folderName = 'generate-html';
   const stats = await webpack(baseWebpackConfig([
     new ReFaviconsWebpackPlugin({
       logo: LOGO_PATH,
@@ -96,15 +98,16 @@ test('should work together with the html-webpack-plugin', async t => {
       persistentCache: false
     }),
     new HtmlWebpackPlugin()
-  ]));
+  ], folderName));
   const outputPath = stats.compilation.compiler.outputPath;
-  const expected = path.resolve(__dirname, 'fixtures/expected/generate-html');
+  const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
   const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
   const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
   t.is(diffFiles[0], undefined);
 });
 
 test('should not recompile if there is a cache file', async t => {
+  const folderName = 'from-cache';
   const options = baseWebpackConfig([
     new ReFaviconsWebpackPlugin({
       logo: LOGO_PATH,
@@ -112,11 +115,11 @@ test('should not recompile if there is a cache file', async t => {
       persistentCache: true
     }),
     new HtmlWebpackPlugin()
-  ]);
+  ], folderName);
 
   // Bring cache file in place
   const cacheFile = 'icons-366a3768de05f9e78c392fa62b8fbb80/.cache';
-  const cacheFileExpected = path.resolve(__dirname, 'fixtures/expected/from-cache/', cacheFile);
+  const cacheFileExpected = path.resolve(__dirname, `fixtures/expected/${folderName}`, cacheFile);
   const cacheFileDist = path.resolve(__dirname, options.output.path, cacheFile);
   await mkdirp(path.dirname(cacheFileDist));
   const cache = JSON.parse(await readFile(cacheFileExpected));
@@ -125,7 +128,7 @@ test('should not recompile if there is a cache file', async t => {
 
   const stats = await webpack(options);
   const outputPath = stats.compilation.compiler.outputPath;
-  const expected = path.resolve(__dirname, 'fixtures/expected/from-cache');
+  const expected = path.resolve(__dirname, `fixtures/expected/${folderName}`);
   const compareResult = await dircompare.compare(outputPath, expected, compareOptions);
   const diffFiles = compareResult.diffSet.filter((diff) => diff.state !== 'equal');
   t.is(diffFiles[0], undefined);

@@ -3,3 +3,5 @@
 /example/dist/
 npm-debug.log
 yarn.lock
+
+.DS_Store

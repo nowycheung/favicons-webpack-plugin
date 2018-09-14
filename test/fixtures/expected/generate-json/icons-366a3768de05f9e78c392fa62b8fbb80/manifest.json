@@ -1,6 +1,6 @@
 {
-  "name": "favicons-webpack-plugin",
-  "short_name": "favicons-webpack-plugin",
+  "name": "refavicons-webpack-plugin",
+  "short_name": "refavicons-webpack-plugin",
   "description": null,
   "dir": "auto",
   "lang": "en-US",
@@ -8,6 +8,7 @@
   "orientation": "any",
   "start_url": "/?homescreen=1",
   "background_color": "#fff",
+  "theme_color": "#fff",
   "icons": [
     {
       "src": "android-chrome-36x36.png",

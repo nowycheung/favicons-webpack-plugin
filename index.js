@@ -18,8 +18,21 @@ function ReFaviconsWebpackPlugin (options) {
     emitStats: false,
     statsFilename: 'iconstats-[hash].json',
     persistentCache: true,
-    inject: true,
+    inject: true
   }, options);
+
+  this.options.icons = _.extend({
+    android: true,
+    appleIcon: true,
+    appleStartup: true,
+    coast: false,
+    favicons: true,
+    firefox: true,
+    opengraph: false,
+    twitter: false,
+    yandex: false,
+    windows: false
+  }, this.options.icons);
 }
 
 ReFaviconsWebpackPlugin.prototype.apply = function (compiler) {
@@ -56,7 +69,7 @@ ReFaviconsWebpackPlugin.prototype.apply = function (compiler) {
     // webpack 4
     if (compiler.hooks) {
       compiler.hooks.compilation.tap('ReFaviconsWebpackPlugin', function (cmpp) {
-        cmpp.hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync('favicons-webpack-plugin', addFaviconsToHtml);
+        cmpp.hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync('refavicons-webpack-plugin', addFaviconsToHtml);
       });
     } else {
       compiler.plugin('compilation', function (compilation) {
